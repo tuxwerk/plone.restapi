@@ -52,13 +52,16 @@ class OrderingMixin(object):
         ordering = self.getOrdering()
         catalog = getToolByName(self.context, 'portal_catalog')
 
-        brains = catalog(path={
-            'query': '/'.join(self.context.getPhysicalPath()),
-            'depth': 1
-        }, sort_on=data['sort']['on'])
+        sort_order = str(data['sort'].get('order', 'ascending'))
 
-        if data['sort'].get('reversed'):
-            brains = reversed(brains)
+        brains = catalog(
+            path={
+                'query': '/'.join(self.context.getPhysicalPath()),
+                'depth': 1
+            },
+            sort_on=data['sort']['on'],
+            sort_order=sort_order,
+        )
 
         for idx, brain in enumerate(brains):
             ordering.moveObjectToPosition(brain.id, idx)

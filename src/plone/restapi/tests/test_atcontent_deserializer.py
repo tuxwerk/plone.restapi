@@ -274,7 +274,7 @@ class TestATContentDeserializer(unittest.TestCase):
                key=lambda x: x.UID(),
                reverse=True)]
 
-        data = {'sort': {'on': 'UID', 'reversed': True}}
+        data = {'sort': {'on': 'UID', 'order': 'descending'}}
         self.deserialize(body=json.dumps(data), context=self.folder)
 
         self.assertEquals(ids, self.folder.objectIds())
