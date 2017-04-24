@@ -33,7 +33,7 @@ class TestATContentDeserializer(unittest.TestCase):
         self.doc1 = self.portal[self.portal.invokeFactory(
             'ATTestDocument', id='doc1', title='Test Document')]
 
-        # ordering setup
+        # ordering and sorting setup
         self.folder = self.portal[self.portal.invokeFactory(
             'ATTestFolder', id='folder1', title='Test folder'
         )]
@@ -242,6 +242,39 @@ class TestATContentDeserializer(unittest.TestCase):
             u'Client/server ordering mismatch',
             cm.exception.message
         )
+
+    def test_sorting(self):
+        # sanity check, initial situation
+        self.assertEquals(
+            ['doc1', 'doc2', 'doc3', 'doc4', 'doc5', 'doc6', 'doc7', 'doc8', 'doc9'],  # noqa
+            self.folder.objectIds()
+        )
+
+        # expected ids order
+        ids = [x.getId() for x in sorted(self.folder.objectValues(), key=lambda x: x.UID())]
+
+        data = {'sort': {'on': 'UID'}}
+        self.deserialize(body=json.dumps(data), context=self.folder)
+
+        self.assertEquals(ids, self.folder.objectIds())
+
+    def test_sorting_reverse(self):
+        # sanity check, initial situation
+        self.assertEquals(
+            ['doc1', 'doc2', 'doc3', 'doc4', 'doc5', 'doc6', 'doc7', 'doc8', 'doc9'],  # noqa
+            self.folder.objectIds()
+        )
+
+        # expected ids order
+        ids = [x.getId() for x in
+               sorted(self.folder.objectValues(),
+               key=lambda x: x.UID(),
+               reverse=True)]
+
+        data = {'sort': {'on': 'UID', 'reversed': True}}
+        self.deserialize(body=json.dumps(data), context=self.folder)
+
+        self.assertEquals(ids, self.folder.objectIds())
 
 
 class TestValidationRequest(unittest.TestCase):

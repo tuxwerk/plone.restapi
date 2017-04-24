@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 from plone.folder.interfaces import IExplicitOrdering
 from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
+from Products.CMFCore.utils import getToolByName
 from zExceptions import BadRequest
 
 
 class OrderingMixin(object):
+    # Handles both ordering and sorting
 
     def handle_ordering(self, data):
         if 'ordering' in data:
@@ -43,3 +45,20 @@ class OrderingMixin(object):
             if not IExplicitOrdering.providedBy(ordering):
                 return None
             return ordering
+
+    def handle_sorting(self, data):
+        if 'sort' not in data:
+            return
+        ordering = self.getOrdering()
+        catalog = getToolByName(self.context, 'portal_catalog')
+
+        brains = catalog(path={
+            'query': '/'.join(self.context.getPhysicalPath()),
+            'depth': 1
+        }, sort_on=data['sort']['on'])
+
+        if data['sort'].get('reversed'):
+            brains = reversed(brains)
+
+        for idx, brain in enumerate(brains):
+            ordering.moveObjectToPosition(brain.id, idx)

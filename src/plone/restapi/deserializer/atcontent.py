@@ -77,6 +77,7 @@ class DeserializeFromJson(OrderingMixin, object):
 
         # OrderingMixin
         self.handle_ordering(data)
+        self.handle_sorting(data)
 
         return obj
 

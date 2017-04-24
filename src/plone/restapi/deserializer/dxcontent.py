@@ -115,6 +115,7 @@ class DeserializeFromJson(OrderingMixin, object):
 
         # OrderingMixin
         self.handle_ordering(data)
+        self.handle_sorting(data)
 
         if modified:
             notify(ObjectModifiedEvent(self.context))

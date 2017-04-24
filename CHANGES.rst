@@ -5,6 +5,9 @@ Changelog
 -------------------
 
 New Features:
+- Sort/rearrange childeren in an item using the content endpoint.
+  [jaroel]
+
 - Reorder children in a item using the content endpoint.
   [jaroel]
 

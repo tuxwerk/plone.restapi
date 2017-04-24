@@ -333,3 +333,14 @@ A response 400 BadRequest with a message 'Client/server ordering mismatch' will 
 
 ..  http:example:: curl httpie python-requests
     :request: _json/content_reorder.req
+
+
+Sorting resources
+-----------------
+Sorting all children in a resource can done by setting the `sort` key using a PATCH request on the resource.
+
+Use the `on` subkey to specify an index to sort the resources on.
+The subkey `reversed` can be set to change the ordering from ascending to descending.
+
+..  http:example:: curl httpie python-requests
+    :request: _json/content_sort.req
