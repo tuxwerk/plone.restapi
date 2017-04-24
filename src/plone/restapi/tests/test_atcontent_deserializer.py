@@ -251,7 +251,10 @@ class TestATContentDeserializer(unittest.TestCase):
         )
 
         # expected ids order
-        ids = [x.getId() for x in sorted(self.folder.objectValues(), key=lambda x: x.UID())]
+        ids = [
+            x.getId() for x
+            in sorted(self.folder.objectValues(), key=lambda x: x.UID())
+        ]
 
         data = {'sort': {'on': 'UID'}}
         self.deserialize(body=json.dumps(data), context=self.folder)
