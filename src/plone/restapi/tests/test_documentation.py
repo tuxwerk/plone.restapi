@@ -1709,3 +1709,8 @@ class TestPAMDocumentation(unittest.TestCase):
                 "language": "es"
             })
         save_request_and_response_for_docs('translations_delete', response)
+
+    def test_documentation_schema_user(self):
+        response = self.api_session.get('/@userschema')
+
+        save_request_and_response_for_docs('userschema', response)
