@@ -34,6 +34,7 @@ Contents
    types
    types-schema
    users
+   userschema
    groups
    principals
    roles
