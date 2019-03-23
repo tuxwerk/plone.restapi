@@ -1,6 +1,9 @@
 User Schema
 ===========
 
+.. note::
+    This is only available on Plone 5.
+
 Users in Plone have a set of properties defined by a default set of fields like ``fullname``, ``email``, ``portrait``, etc.
 These properties define the site user's profile and the user itself via the Plone UI or the site managers can add them in a variety of ways (eg. using PAS plugins.)
 
