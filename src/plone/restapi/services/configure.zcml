@@ -22,7 +22,6 @@
   <include package=".registry"/>
   <include package=".roles"/>
   <include package=".search"/>
-  <include package=".schema"/>
   <include package=".types"/>
   <include package=".users"/>
   <include package=".vocabularies"/>
@@ -35,5 +34,7 @@
       zcml:condition="have plone-5"/>
   <include package=".tiles"
       zcml:condition="installed plone.tiles" />
+  <include package=".userschema"
+      zcml:condition="have plone-5"/>
 
 </configure>

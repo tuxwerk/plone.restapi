@@ -17,7 +17,7 @@ else:
 
 
 @unittest.skipIf(not PLONE5, 'Just Plone 5 currently.')
-class TestControlpanelsEndpoint(unittest.TestCase):
+class TestUserSchemaEndpoint(unittest.TestCase):
 
     layer = PLONE_RESTAPI_DX_FUNCTIONAL_TESTING
 
@@ -35,7 +35,7 @@ class TestControlpanelsEndpoint(unittest.TestCase):
     def tearDown(self):
         self.api_session.close()
 
-    def test_schema_user_get(self):
+    def test_userschema_get(self):
         response = self.api_session.get('/@userschema')
 
         self.assertEqual(200, response.status_code)

@@ -3,7 +3,6 @@
     xmlns:plone="http://namespaces.plone.org/plone"
     xmlns:zcml="http://namespaces.zope.org/zcml">
 
-  <configure zcml:condition="have plone-5">
     <plone:service
       method="GET"
       name="@userschema"
@@ -11,6 +10,5 @@
       factory=".user.UserSchemaGet"
       permission="zope2.View"
     />
-  </configure>
 
 </configure>
