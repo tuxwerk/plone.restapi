@@ -83,6 +83,14 @@ test-performance:
 code-analysis:  ## Code Analysis
 	bin/code-analysis
 
+.PHONY: Build Docs
+docs:  ## Build Docs
+	bin/sphinxbuilder
+
+.PHONY: Test Release
+test-release:  ## Run Pyroma and Check Manifest
+	bin/pyroma -n 10 -d .
+
 .PHONY: Release
 release:  ## Release
 	bin/fullrelease
