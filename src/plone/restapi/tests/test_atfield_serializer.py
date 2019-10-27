@@ -4,14 +4,12 @@ from mock import patch
 from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from plone.restapi.interfaces import IFieldSerializer
-from plone.registry.interfaces import IRegistry
+from plone.restapi.imaging import get_scale_infos
 from plone.restapi.testing import HAS_AT
 from plone.restapi.testing import PLONE_RESTAPI_AT_INTEGRATION_TESTING
 from plone.restapi.testing import PLONE_VERSION
 from plone.scale import storage
-from Products.CMFCore.utils import getToolByName
 from zope.component import getMultiAdapter
-from zope.component import getUtility
 
 import os
 import six
@@ -131,12 +129,7 @@ class TestATFieldSerializer(unittest.TestCase):
             download_url = u"{}/@@images/{}.{}".format(
                 obj_url, scale_url_uuid, GIF_SCALE_FORMAT
             )
-            if PLONE_VERSION.base_version >= "5.0":
-                registry = getUtility(IRegistry)
-                allowed_sizes = registry["plone.allowed_sizes"]
-            else:
-                portal_properties = getToolByName('portal_properties')
-                allowed_sizes = portal_properties.imaging_properties.getProperty("allowed_sizes")
+            allowed_sizes = get_scale_infos()
 
             scales = value["scales"]
             del value["scales"]
@@ -154,10 +147,8 @@ class TestATFieldSerializer(unittest.TestCase):
             )
 
             for allowed_size in allowed_sizes:
-                name, size_def = allowed_size.split()
+                name, width, height = allowed_size
                 self.assertIn(name, scales)
-                width, height = size_def.split(":")
-                width = int(width)
                 self.assertEqual(width, scales[name]["width"])
                 self.assertEqual(download_url, scales[name]["download"])
 
@@ -212,12 +203,7 @@ class TestATFieldSerializer(unittest.TestCase):
             download_url = u"{}/@@images/{}.{}".format(
                 obj_url, scale_url_uuid, GIF_SCALE_FORMAT
             )
-            if PLONE_VERSION.base_version >= "5.0":
-                registry = getUtility(IRegistry)
-                allowed_sizes = registry["plone.allowed_sizes"]
-            else:
-                portal_properties = getToolByName('portal_properties')
-                allowed_sizes = portal_properties.imaging_properties.getProperty("allowed_sizes")
+            allowed_sizes = get_scale_infos()
 
             scales = value["scales"]
             del value["scales"]
@@ -235,10 +221,8 @@ class TestATFieldSerializer(unittest.TestCase):
             )
 
             for allowed_size in allowed_sizes:
-                name, size_def = allowed_size.split()
+                name, width, height = allowed_size
                 self.assertIn(name, scales)
-                width, height = size_def.split(":")
-                width = int(width)
                 self.assertEqual(width, scales[name]["width"])
                 self.assertEqual(download_url, scales[name]["download"])
 

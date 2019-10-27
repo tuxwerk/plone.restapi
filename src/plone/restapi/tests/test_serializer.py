@@ -6,13 +6,11 @@ from plone.app.testing import TEST_USER_ID
 from plone.app.textfield.value import RichTextValue
 from plone.namedfile.file import NamedBlobImage
 from plone.namedfile.file import NamedFile
-from plone.registry.interfaces import IRegistry
+from plone.restapi.imaging import get_scale_infos
 from plone.restapi.interfaces import ISerializeToJson
 from plone.restapi.testing import PLONE_RESTAPI_DX_INTEGRATION_TESTING
-from plone.restapi.testing import PLONE_VERSION
 from plone.scale import storage
 from Products.CMFCore.utils import getToolByName
-from zope.component import getUtility
 from zope.component import getMultiAdapter
 
 import json
@@ -264,35 +262,7 @@ class TestSerializeToJsonAdapter(unittest.TestCase):
             download_url = u"{}/@@images/{}.png".format(obj_url, scale_url_uuid)
             obj = self.serialize(self.portal.image1)["image"]
 
-            if PLONE_VERSION.base_version >= "5.0":
-                registry = getUtility(IRegistry)
-                registry["plone.allowed_sizes"] = [
-                    "large 215:56",
-                    "preview 215:56",
-                    "mini 215:56",
-                    "thumb 200:52",
-                    "tile 64:64",
-                    "icon 32:32",
-                    "listing 16:16",
-                ]
-
-                allowed_sizes = registry["plone.allowed_sizes"]
-            else:
-                portal_properties = getToolByName('portal_properties')
-                portal_properties.imaging_properties.setProperty(
-                    "allowed_sizes",
-                    (
-                        "large 215:56",
-                        "preview 215:56",
-                        "mini 215:56",
-                        "thumb 200:52",
-                        "tile 64:64",
-                        "icon 32:32",
-                        "listing 16:16",
-                    )
-                )
-                allowed_sizes = portal_properties.imaging_properties.getProperty("allowed_sizes")
-
+            allowed_sizes = get_scale_infos()
 
             scales = obj["scales"]
             del obj["scales"]
@@ -310,10 +280,8 @@ class TestSerializeToJsonAdapter(unittest.TestCase):
             )
 
             for allowed_size in allowed_sizes:
-                name, size_def = allowed_size.split()
+                name, width, height = allowed_size
                 self.assertIn(name, scales)
-                width, height = size_def.split(":")
-                width = int(width)
                 self.assertEqual(width, scales[name]["width"])
                 self.assertEqual(download_url, scales[name]["download"])
 
