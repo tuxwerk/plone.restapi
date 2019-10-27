@@ -271,10 +271,10 @@ class TestSerializeToJsonAdapter(unittest.TestCase):
                 {
                     u"filename": u"image.png",
                     u"content-type": u"image/png",
-                    u"size": 1185,
+                    u"size": 7534,
                     u"download": download_url,
-                    u"width": 215,
-                    u"height": 56,
+                    u"width": 982,
+                    u"height": 256,
                 },
                 obj,
             )
